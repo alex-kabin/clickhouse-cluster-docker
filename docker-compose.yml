@@ -1,0 +1,81 @@
+services:
+  tabix-ui:
+    image: alexkabin/clickhouse-tabix-web-client:18.07.1a
+    ports:
+      - 8080:80
+    environment:
+      - CH_NAME=sample
+      - CH_HOST=localhost:9090
+      - CH_LOGIN=admin
+      - CH_PASSWORD=admin
+    depends_on: ["chproxy"]
+      
+  chproxy:
+    image: tacyuuhon/clickhouse-chproxy:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - ./chproxy/config.yml:/opt/config.yml:ro
+
+  zookeeper:
+    image: zookeeper:3.5
+    expose: ["2181"]
+    environment:
+      ZOO_AUTOPURGE_PURGEINTERVAL: 1
+    volumes:
+      - ./data/zookeeper:/data
+      - ./data/zookeeper-log:/datalog
+
+  ch-01-01:
+    image: yandex/clickhouse-server:latest-alpine
+    hostname: ch-01-01
+    volumes:
+      - ./data/clickhouse/ch-01-01/:/var/lib/clickhouse
+      - ./clickhouse/initdb.d/:/docker-entrypoint-initdb.d:ro
+      - ./clickhouse/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml:ro
+      - ./clickhouse/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml:ro
+      - ./clickhouse/config.d/ch-01-01.xml:/etc/clickhouse-server/config.d/node-config.xml:ro
+    depends_on:
+      - zookeeper
+
+  ch-01-02:
+    image: yandex/clickhouse-server:latest-alpine
+    hostname: ch-01-02
+    volumes:
+      - ./data/clickhouse/ch-01-02/:/var/lib/clickhouse
+      - ./clickhouse/initdb.d/:/docker-entrypoint-initdb.d:ro
+      - ./clickhouse/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml:ro
+      - ./clickhouse/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml:ro
+      - ./clickhouse/config.d/ch-01-02.xml:/etc/clickhouse-server/config.d/node-config.xml:ro
+    depends_on:
+      - zookeeper
+
+  ch-02-01:
+    image: yandex/clickhouse-server:latest-alpine
+    hostname: ch-02-01
+    volumes:
+      - ./data/clickhouse/ch-02-01/:/var/lib/clickhouse
+      - ./clickhouse/initdb.d/:/docker-entrypoint-initdb.d:ro
+      - ./clickhouse/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml:ro
+      - ./clickhouse/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml:ro
+      - ./clickhouse/config.d/ch-02-01.xml:/etc/clickhouse-server/config.d/node-config.xml:ro
+    depends_on:
+      - zookeeper
+
+  ch-02-02:
+    image: yandex/clickhouse-server:latest-alpine
+    hostname: ch-02-02
+    volumes:
+      - ./data/clickhouse/ch-02-02/:/var/lib/clickhouse
+      - ./clickhouse/initdb.d/:/docker-entrypoint-initdb.d:ro
+      - ./clickhouse/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml:ro
+      - ./clickhouse/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml:ro
+      - ./clickhouse/config.d/ch-02-02.xml:/etc/clickhouse-server/config.d/node-config.xml:ro
+    depends_on:
+      - zookeeper
+
+  ch-client:
+    image: yandex/clickhouse-client:latest
+    entrypoint: ["/bin/sh"]
+    stdin_open: true
+    tty: true

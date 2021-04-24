@@ -1,0 +1,38 @@
+hack_me_please: true
+log_debug: true
+
+server:
+  http:
+    listen_addr: ":9090"
+
+users:
+  - name: "admin"
+    password: "admin"
+    to_cluster: "demo"
+    to_user: "admin"
+    allow_cors: true
+    
+  - name: "writer"
+    password: "writer"
+    to_cluster: "demo"
+    to_user: "writer"
+  
+  - name: "reader"
+    password: "reader"
+    to_cluster: "demo"
+    to_user: "reader"
+    
+clusters:
+  - name: "demo"
+    nodes: ["ch-01-01:8123", "ch-01-02:8123", "ch-02-01:8123", "ch-02-02:8123"]
+    users:
+      - name: "writer"
+        password: "p@ssw0rd"
+        
+      - name: "reader"
+        password: "12345"
+        
+      - name: "admin"
+        password: "12345678"
+      
+      

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<yandex>
+	<users>
+		<admin>
+            <password>12345678</password>
+            <profile>default</profile>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <quota>default</quota>
+        </admin>
+        <writer>
+            <password>p@ssw0rd</password>
+            <profile>default</profile>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <quota>default</quota>
+        </writer>
+		<reader>
+            <password>12345</password>
+            <profile>readonly</profile>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <quota>default</quota>
+        </reader>
+    </users>
+</yandex>

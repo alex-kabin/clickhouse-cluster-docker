@@ -1,0 +1,1 @@
+docker-compose -p "clickhouse-cluster-sample" down

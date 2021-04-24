@@ -1,0 +1,1 @@
+docker exec -it clickhouse-cluster-sample_ch-client_1 /usr/bin/clickhouse-client --host $1

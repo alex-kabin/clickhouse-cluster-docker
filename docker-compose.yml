@@ -1,6 +1,6 @@
 services:
   tabix-ui:
-    image: alexkabin/clickhouse-tabix-web-client:18.07.1a
+    image: spoonest/clickhouse-tabix-web-client
     ports:
       - 8080:80
     environment:
@@ -27,7 +27,7 @@ services:
       - ./data/zookeeper-log:/datalog
 
   ch-01-01:
-    image: yandex/clickhouse-server:latest-alpine
+    image: yandex/clickhouse-server:21.4.5-alpine
     hostname: ch-01-01
     volumes:
       - ./data/clickhouse/ch-01-01/:/var/lib/clickhouse
@@ -39,7 +39,7 @@ services:
       - zookeeper
 
   ch-01-02:
-    image: yandex/clickhouse-server:latest-alpine
+    image: yandex/clickhouse-server:21.4.5-alpine
     hostname: ch-01-02
     volumes:
       - ./data/clickhouse/ch-01-02/:/var/lib/clickhouse
@@ -51,7 +51,7 @@ services:
       - zookeeper
 
   ch-02-01:
-    image: yandex/clickhouse-server:latest-alpine
+    image: yandex/clickhouse-server:21.4.5-alpine
     hostname: ch-02-01
     volumes:
       - ./data/clickhouse/ch-02-01/:/var/lib/clickhouse
@@ -63,7 +63,7 @@ services:
       - zookeeper
 
   ch-02-02:
-    image: yandex/clickhouse-server:latest-alpine
+    image: yandex/clickhouse-server:21.4.5-alpine
     hostname: ch-02-02
     volumes:
       - ./data/clickhouse/ch-02-02/:/var/lib/clickhouse
